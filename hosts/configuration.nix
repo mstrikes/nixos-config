@@ -4,17 +4,22 @@
     users.users.${user} = {
         isNormalUser = true;
         extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
-        packages = with pkgs; [
-          firefox
-          discord
-        ];
         shell = pkgs.fish;
     };
 
     environment.systemPackages = with pkgs; [
         git wget neovim
         firefox discord spotifyd
+        zoom-us foot
     ];
+    
+    #nixpkgs.overlays = [
+    #    (self: super: {
+    #        discord = super.discord.overrideAttrs (_: {
+	#                src = builtins.fetchTarball "https://discord.com/api/download?platform=linux&format=tar.gz";
+	#            });})
+    #];
+
 
     programs.fish = { enable = true; };
 
@@ -94,9 +99,10 @@
         gc = {
             automatic = true;
             dates = "weekly";
-            options = "--delete-older-then 30d";
+            options = "--delete-older-then 14d";
         };
     };
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -17,7 +17,12 @@
     let mkSystem = import ./lib/mkSystem.nix;
         user = "matan";
     in {
-       nixosConfigurations.watson = mkSystem "watson" {
+        nixosConfigurations.watson = mkSystem "watson" {
+            inherit user nixpkgs;
+            system = "x86_64-linux";
+        };
+
+        nixosConfigurations.matilda = mkSystem "matilda" {
             inherit user nixpkgs;
             system = "x86_64-linux";
         };

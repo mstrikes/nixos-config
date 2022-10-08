@@ -1,16 +1,19 @@
-host: { nixpkgs, system, user }:
+host: { nixpkgs, home-manager, system, user, overlays }:
 
 nixpkgs.lib.nixosSystem {
     inherit system;
     specialArgs = { inherit host user; };
     modules = [
-        ../hosts/configuration.nix
-        ../hosts/${host}/configuration.nix # host spacific configuration
+        { nixpkgs.overlays = overlays; }
 
-#        home-manager.nixosModules.home-manager {
-#            home-manager.useGlobalPkgs = true;
-#            home-manager.useUserPackages = true;
-#            home-manager.users.${user} = import ../users/${user}/home-manager.nix;
-#        }
+        ../hosts/shared-configuration.nix
+        ../hosts/${host}/host-configuration.nix
+
+        ../users/${user}/user.nix
+        home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${user} = import ../users/${user}/home.nix;
+        }
    ];
 }

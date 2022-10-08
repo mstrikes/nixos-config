@@ -4,11 +4,9 @@
     xdg.enable = true;
 
     home.packages = with pkgs; [
-        firefox
-        discord
-        nvim
-        wget
-        tetex
+        spotify zoom-us
+        discord neovim
+        foot wget
     ];
 
     home.sessionVariables = {
@@ -35,8 +33,10 @@
 
         extraConfig = {
             color.ui = true;
-            core.askPass = ""; # ask pass within terminal
+            core.askPass = "";
             credential.helper = "store"
         };
     };
+
+    programs.firefox.enable = true;
 }

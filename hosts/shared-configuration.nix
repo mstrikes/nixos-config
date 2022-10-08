@@ -1,27 +1,10 @@
 {config, pkgs, host, user, ... }:
 
 {
-    users.users.${user} = {
-        isNormalUser = true;
-        extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
-        shell = pkgs.fish;
-    };
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
 
-    environment.systemPackages = with pkgs; [
-        git wget neovim
-        firefox discord spotifyd
-        zoom-us foot
-    ];
-    
-    #nixpkgs.overlays = [
-    #    (self: super: {
-    #        discord = super.discord.overrideAttrs (_: {
-	#                src = builtins.fetchTarball "https://discord.com/api/download?platform=linux&format=tar.gz";
-	#            });})
-    #];
-
-
-    programs.fish = { enable = true; };
+    users.mutableUsers = false;
 
     # Enable networking
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -33,21 +16,16 @@
     time.timeZone = "Asia/Jerusalem";
     time.hardwareClockInLocalTime = true;
 
-    # Select internationalisation properties.
-    i18n.defaultLocale = "en_IL.utf8";
-
     # Enable the X11 windowing system.
     services.xserver = {
         enable = true;
 
+        desktopManager.xterm.enable = false;
+        
         # GNOME desktop environment
         displayManager.gdm.enable = true;
         displayManager.gdm.wayland = true;
         desktopManager.gnome.enable = true;
-
-        # keymap
-        layout = "us";
-        xkbVariant = "";
 
         # input
         libinput.enable = true;

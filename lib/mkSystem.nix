@@ -7,6 +7,7 @@ nixpkgs.lib.nixosSystem {
         { nixpkgs.overlays = overlays; }
 
         ../hosts/shared-configuration.nix
+        ../hosts/${host}/hardware-configuration.nix
         ../hosts/${host}/host-configuration.nix
 
         ../users/${user}/user.nix

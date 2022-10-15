@@ -30,7 +30,8 @@
         # input
         libinput.enable = true;
     };
-
+    programs.xwayland.enable = true;
+    
     fonts = {
       enableDefaultFonts = true;
       fonts = with pkgs; [

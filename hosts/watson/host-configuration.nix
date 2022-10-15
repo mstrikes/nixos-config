@@ -2,6 +2,5 @@
 
 {
     imports = [
-        ../shared-configuration.nix
     ];
 }

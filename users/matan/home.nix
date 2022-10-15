@@ -6,7 +6,7 @@
     home.packages = with pkgs; [
         spotify zoom-us
         discord neovim
-        foot wget
+        wget
     ];
 
     home.sessionVariables = {
@@ -22,6 +22,28 @@
         enable = true;
     };
 
+    programs.foot = {
+        enable = true;
+        server.enable = true;
+        settings = {
+            main = {
+                term = "xterm-256color";
+
+                font = "JetBrains Mono:size=11";
+                dpi-aware = "yes";
+            };
+
+            bell = {
+                urgent = false;
+                notify = false;
+            };
+            
+            cursor = {
+                style = "beam";
+            };
+        };
+    };
+
     programs.git = {
         enable = true;
         userName = "Matan Dery";
@@ -34,7 +56,7 @@
         extraConfig = {
             color.ui = true;
             core.askPass = "";
-            credential.helper = "store"
+            credential.helper = "store";
         };
     };
 

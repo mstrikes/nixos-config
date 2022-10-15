@@ -13,7 +13,7 @@
         };
     };
 
-    outputs = {self, nixpkgs, ... }@inputs:
+    outputs = {self, nixpkgs, home-manager, ... }@inputs:
     let
         mkSystem = import ./lib/mkSystem.nix;
         overlays = import ./lib/overlays.nix;

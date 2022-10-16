@@ -43,6 +43,14 @@
       };
     };
 
+    programs.steam = {
+        enable = true;
+        # Open ports in the firewall for Steam Remote Play
+        remotePlay.openFirewall = true;
+        # Open ports in the firewall for Source Dedicated Server
+        dedicatedServer.openFirewall = true;
+    };
+
     # Enable CUPS to print documents.
     services.printing.enable = true;
     services.printing.drivers = [ pkgs.hplip ];

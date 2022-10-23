@@ -18,6 +18,14 @@
 
     # xdg.configFile."....".source =
 
+    xdg.configFile."discord/settings.json".text = ''
+    {
+        "SKIP_HOST_UPDATE": true,
+        "IS_MAXIMIZED": true,
+        "IS_MINIMIZED": false,
+    }
+    '';
+
     programs.fish = {
         enable = true;
     };

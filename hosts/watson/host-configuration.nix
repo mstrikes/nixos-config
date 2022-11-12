@@ -1,11 +1,11 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-    imports = [
-    ];
-    
-    services.xserver.videoDrivers = [ "nvidia" ];
-    hardware.opengl.enable = true;
-    hardware.nvidia.powerManagement.enable = true;
+  imports = [
+  ];
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.opengl.enable = true;
+  hardware.nvidia.powerManagement.enable = true;
 
 }

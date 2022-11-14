@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./firefox
+  ];
+
   xdg.enable = true;
 
   home.packages = with pkgs; [
@@ -119,9 +123,5 @@
       core.askPass = "";
       credential.helper = "store";
     };
-  };
-
-  programs.firefox = {
-    enable = true;
   };
 }

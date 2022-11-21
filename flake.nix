@@ -2,11 +2,10 @@
   description = "Nixos configuration";
 
   inputs = {
-    # Pin nixpkgs to latest release, I don't want unstable currently
-    nixpkgs.url = "github:nixos/nixpkgs/release-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.05";
+      url = "github:nix-community/home-manager/master";
 
       # use same nixpkgs as system
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,9 +14,9 @@
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
+      user = "matan";
       mkSystem = import ./lib/mkSystem.nix;
       overlays = import ./lib/overlays.nix;
-      user = "matan";
     in
     {
       nixosConfigurations.watson = mkSystem "watson" {
@@ -30,6 +29,6 @@
         system = "x86_64-linux";
       };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      formatter.${self.system} = nixpkgs.legacyPackages.${self.system}.nixpkgs-fmt;
     };
 }

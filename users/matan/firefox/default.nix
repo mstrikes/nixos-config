@@ -3,7 +3,7 @@
   programs.firefox = {
     enable = true;
  
-    extentions = [
+    extensions = [
         
     ];
       
@@ -11,7 +11,7 @@
       isDefault = true;
       name = "matan";
 
-      bookmarks = import ./bookmarks; 
+      bookmarks = import ./bookmarks.nix; 
 
       search.engines = {
         "Nix Packages" = {
@@ -39,6 +39,7 @@
       };
 
       search.order = [ "Google" "DuckDuckGo" ];
+      search.default = "Google";
 
       settings = { };
     };

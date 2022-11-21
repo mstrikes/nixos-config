@@ -63,7 +63,7 @@
   {
     name = "Whatsapp Web";
     keyword = "whatsapp";
-    url = "https://web.whatsapp.com"
+    url = "https://web.whatsapp.com";
   }
   {
     name = "wikipedia";
@@ -95,4 +95,4 @@
        
     ];
   }
-];
+]

@@ -22,13 +22,15 @@
     EDITOR = "nvim";
   };
 
+  home.stateVersion = "22.05";
+
   # xdg.configFile."....".source =
 
   xdg.configFile."discord/settings.json".text = ''
     {
         "SKIP_HOST_UPDATE": true,
         "IS_MAXIMIZED": true,
-        "IS_MINIMIZED": false,
+        "IS_MINIMIZED": false
     }
   '';
 

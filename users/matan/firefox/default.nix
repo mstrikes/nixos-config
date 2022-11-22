@@ -12,7 +12,7 @@
       name = "matan";
 
       bookmarks = import ./bookmarks.nix; 
-
+      search.force = true;
       search.engines = {
         "Nix Packages" = {
           urls = [{

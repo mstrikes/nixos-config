@@ -1,4 +1,4 @@
-local set = vim.set
+local set = vim.opt
 local g = vim.g
 
 set.number = true

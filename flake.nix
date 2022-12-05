@@ -29,6 +29,6 @@
         system = "x86_64-linux";
       };
 
-      formatter.${self.system} = nixpkgs.legacyPackages.${self.system}.nixpkgs-fmt;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     };
 }

@@ -2,16 +2,16 @@
 {
   programs.firefox = {
     enable = true;
- 
+
     extensions = [
-        
+
     ];
-      
+
     profiles.matan = {
       isDefault = true;
       name = "matan";
 
-      bookmarks = import ./bookmarks.nix; 
+      bookmarks = import ./bookmarks.nix;
       search.force = true;
       search.engines = {
         "Nix Packages" = {

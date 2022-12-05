@@ -3,6 +3,7 @@
 {
   imports = [
     ./firefox
+    ./neovim
   ];
 
   xdg.enable = true;
@@ -11,8 +12,8 @@
     spotify
     zoom-us
     discord
-    neovim
     wget
+    galaxy-buds-client
   ];
 
   home.sessionVariables = {

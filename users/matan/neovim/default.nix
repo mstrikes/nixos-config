@@ -2,6 +2,7 @@
 {
   programs.neovim = {
     enable = true;
+    
     plugins = with pkgs.vimPlugins; [
       {
         type = "lua";
@@ -30,10 +31,10 @@
       nvim-cmp
       cmp-nvim-lsp
       luasnip
-      cmp-luasnip
+      cmp_luasnip
     ];
 
-    exraPackages = with pkgs; [
+    extraPackages = with pkgs; [
       rnix-lsp
     ];
   };

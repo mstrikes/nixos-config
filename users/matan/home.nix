@@ -16,9 +16,6 @@
   ];
 
   home.sessionVariables = {
-    LANG = "en_IL.UTF-8";
-    LC_CTYPE = "en_IL.UTF-8";
-    LC_ALL = "en_IL.UTF-8";
     EDITOR = "nvim";
   };
 

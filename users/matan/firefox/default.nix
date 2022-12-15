@@ -18,8 +18,9 @@
           urls = [{
             template = "https://search.nixos.org/packages";
             params = [
-              { name = "type"; value = "packages"; }
-              { name = "query"; value = "{searchTerms}"; }
+              { name = "channel"; value = "unstable"; }
+              { name = "type";    value = "packages"; }
+              { name = "query";   value = "{searchTerms}"; }
             ];
           }];
 
@@ -32,6 +33,20 @@
           iconUpdateURL = "https://nixos.wiki/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nw" ];
+        };
+
+        "Movies" = {
+            urls = [{ template = "https://lookmovie2.to/movies/search/?q={searchTerms}"; }];
+            iconUpdateURL = "https://lookmovie2.to/favicon-96x96.png";
+            updateInterval = 24 * 60 * 60 * 1000; # every day
+            definedAliases = [ "@lm" ];
+        };
+        
+        "Shows" = {
+            urls = [{ template = "https://lookmovie2.to/shows/search/?q={searchTerms}"; }];
+            iconUpdateURL = "https://lookmovie2.to/favicon-96x96.png";
+            updateInterval = 24 * 60 * 60 * 1000; # every day
+            definedAliases = [ "@ls" ];
         };
 
         "Bing".metaData.hidden = true;

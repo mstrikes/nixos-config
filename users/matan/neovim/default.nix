@@ -2,7 +2,7 @@
 {
   programs.neovim = {
     enable = true;
-    
+
     plugins = with pkgs.vimPlugins; [
       {
         type = "lua";

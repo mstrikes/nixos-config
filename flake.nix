@@ -3,10 +3,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, ... }@inputs:
     let
+      pkgs = inputs.nixpkgs; # add overrides
     in {
-      nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.matilda = pkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { host = "matilda"; };
         modules = [
@@ -17,7 +18,7 @@
         ];
       };
 
-      nixosConfigurations.watson = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.watson = pkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { host = "watson"; };
         modules = [
@@ -29,6 +30,6 @@
         ];
       };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      formatter.x86_64-linux = pkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     };
 }

@@ -4,10 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
   outputs = { self, nixpkgs, ... }@inputs:
-    let
-      overlays = import ./lib/overlays.nix;
-    in
-    {
+    let overlays = import ./lib/overlays.nix; in {
       nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { host = "matilda"; };
@@ -25,7 +22,7 @@
         specialArgs = { host = "watson"; };
         modules = [
           { nixpkgs.overlays = overlays; }
-          ./machines/watson
+          ./machines/matilda
 
           ./profiles/common
           ./profiles/develop

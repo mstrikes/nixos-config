@@ -7,7 +7,7 @@
 
   time.timeZone = lib.mkDefault "Asia/Jerusalem";
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     exa
     git
     bat
@@ -17,7 +17,7 @@
   ];
 
   users.defaultUserShell = pkgs.fish;
-  environment.shells = with pkgs; [ fish ];
+  environment.shells = [ pkgs.fish ];
 
   programs.fish.enable = true;
   programs.fish.shellAliases = {
@@ -28,8 +28,8 @@
 
   fonts = {
     enableDefaultFonts = true;
-    fonts = with pkgs; [
-      jetbrains-mono
+    fonts = [
+      pkgs.jetbrains-mono
     ];
   };
 

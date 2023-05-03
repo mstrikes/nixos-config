@@ -4,16 +4,18 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
   };
   outputs = { self, nixpkgs, ... }@inputs:
-    let overlays = import ./lib/overlays.nix; in {
+    {
+      overlays.default = final: prev: {
+        discord = import ./overlays/discord;      
+      };
+        
       nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { host = "matilda"; };
         modules = [
-          { nixpkgs.overlays = overlays; }
+          { nix.registry.nixpkgs.flake = nixpkgs; }
+          { nixpkgs.overlays = [ self.overlays.default ]; }
           ./machines/matilda
-
-          ./profiles/common
-          ./profiles/develop
         ];
       };
 
@@ -21,12 +23,9 @@
         system = "x86_64-linux";
         specialArgs = { host = "watson"; };
         modules = [
-          { nixpkgs.overlays = overlays; }
-          ./machines/matilda
-
-          ./profiles/common
-          ./profiles/develop
-          ./profiles/game
+          { nix.registry.nixpkgs.flake = nixpkgs; }
+          { nixpkgs.overlays = [ self.overlays.default ]; }
+          ./machines/watson
         ];
       };
 

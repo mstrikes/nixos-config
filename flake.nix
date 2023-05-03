@@ -14,47 +14,47 @@
         # pkg = final: prev: final.callPackge ./packages/pkg;
       };
       
-      nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { host = "matilda"; };
-        modules = [
-          { nix.registry.nixpkgs.flake = nixpkgs; }
-          { nixpkgs.overlays = [ self.overlays.default ]; }
-          ./machines/matilda
-          ./configuration.nix
-        
-          home-manager.nixosModules.home-manager {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.matan = import ./users/matan/home.nix;
-            users.users.matan = {
-              shell = nixpkgs.legacyPackages.x86_64-linux.fish;
-              isNormalUser = true;
-              home = "/home/matan";
-              extraGroups = [ "networkmanager" "wheel" "video" "audio"];
-              password = "123455678";
-            };
-          }
-        ];
+      nixosConfigurations =
+      let
+        x86_64-linux = {
+          system = "x86_64-linux";
+          modules = [
+            home-manager.nixosModules.home-manager
+            traits.stateVersion
+            traits.registry
+            traits.overlays
+          ];
+        };
+      in with self.nixosModules; {
+        matilda = nixpkgs.lib.nixosSystem {
+          inherit (x86_64-linux) system;
+          modules = x86_64-linux.modules ++ [
+            machines.matilda
+            configuration
+            home.matan      
+          ];      
+        };
+        watson = nixpkgs.lib.nixosSystem {
+          inherit (x86_64-linux) system;
+          modules = x86_64-linux.modules ++ [
+            machines.watson
+            configuration
+            home.matan      
+          ];      
+        };
       };
-
-      nixosConfigurations.watson = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { host = "watson"; };
-        modules = [
-          { nix.registry.nixpkgs.flake = nixpkgs; }
-          { nixpkgs.overlays = [ self.overlays.default ]; }
-          ./machines/watson
-        ];
-      };
-
+    
       nixosModules = {
-        profiles.common = ./profiles/common;
-        
+        machines.matilda = ./machines/matilda;
+        machines.watson = ./machines/watson;
+  
+        configuration = ./configuration.nix;
+              
+        traits.stateVersion = { system.stateVersion = "23.05"; };
         traits.overlays = { nixpkgs.overlays = [self.overlays.default ]; };
         traits.registry = { nix.registry.nixpkgs.flake = nixpkgs; };    
         
-        home.matan = home-manager.nixosModules.home-manager {
+        home.matan = {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.matan = import ./users/matan/home.nix;
@@ -64,7 +64,7 @@
               isNormalUser = true;
               home = "/home/matan";
               extraGroups = [ "networkmanager" "wheel" "video" "audio"];
-              password = "123455678";
+              hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
             };
         };
       };

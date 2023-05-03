@@ -1,23 +1,8 @@
 { config, pkgs, host, user, ... }:
 
 {
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  users.mutableUsers = false;
-
-  # Enable networking
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;
-  services.resolved.enable = true;
-  networking.hostName = host;
-
-  # Set your time zone.
-  time.timeZone = "Asia/Jerusalem";
-  time.hardwareClockInLocalTime = true;
-
+  
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
@@ -33,31 +18,6 @@
     libinput.enable = true;
   };
   programs.xwayland.enable = true;
-
-  fonts = {
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
-      jetbrains-mono
-    ];
-
-    fontconfig = {
-      enable = true;
-    };
-  };
-
-  programs.steam = {
-    enable = true;
-    # Open ports in the firewall for Steam Remote Play
-    remotePlay.openFirewall = true;
-    # Open ports in the firewall for Source Dedicated Server
-    dedicatedServer.openFirewall = true;
-  };
-
-  programs.fish.enable = true;
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.drivers = [ pkgs.hplip ];
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -76,22 +36,22 @@
     #media-session.enable = true;
   };
 
+  programs.steam = {
+    enable = true;
+    # Open ports in the firewall for Steam Remote Play
+    remotePlay.openFirewall = true;
+    # Open ports in the firewall for Source Dedicated Server
+    dedicatedServer.openFirewall = true;
+  };
+
+  users.mutableUsers = false;
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+  services.printing.drivers = [ pkgs.hplip ];
+
   nixpkgs.config = {
     allowBroken = true;
     allowUnfree = true;
   };
-
-  nix = {
-    settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
-    };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-then 14d";
-    };
-  };
-
 }

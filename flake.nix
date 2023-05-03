@@ -20,9 +20,9 @@
           system = "x86_64-linux";
           modules = with self.nixosModules; [
             home-manager.nixosModules.home-manager
-            traits.stateVersion
             traits.registry
             traits.overlays
+            traits.base
           ];
         };
       in
@@ -37,7 +37,7 @@
           ];
         };
         watson = nixpkgs.lib.nixosSystem {
-          specialArgs = { host = "matilda"; };
+          specialArgs = { host = "watson"; };
           inherit (x86_64-linux) system;
           modules = x86_64-linux.modules ++ [
             machines.watson
@@ -53,17 +53,16 @@
 
       configuration = ./configuration.nix;
 
-      traits.stateVersion = ./modules/stateVersion.nix;
       traits.overlays = { nixpkgs.overlays = [ self.overlays.default ]; };
       traits.registry = { nix.registry.nixpkgs.flake = nixpkgs; };
-
+      traits.base = ./modules/base.nix;
+      
       home.matan = {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.matan = import ./users/matan/home.nix;
 
         users.users.matan = {
-          shell = nixpkgs.legacyPackages.x86_64-linux.fish;
           isNormalUser = true;
           home = "/home/matan";
           extraGroups = [ "networkmanager" "wheel" "video" "audio" ];

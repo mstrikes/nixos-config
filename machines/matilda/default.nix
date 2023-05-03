@@ -1,4 +1,4 @@
-{config, pkgs, ...}:
+{config, lib, pkgs, modulesPath, ...}:
 {
   imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
@@ -8,7 +8,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ ];
-
+  
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
@@ -36,4 +36,3 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }   
-}

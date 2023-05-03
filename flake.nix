@@ -11,6 +11,7 @@
       overlays.default = final: prev: builtins.mapAttrs (n: o: (o final prev).${n}) self.overlays;
       overlays = {
         discord = import ./overlays/discord.nix;
+        # pkg = final: prev: final.callPackge ./packages/pkg;
       };
       
       nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
@@ -26,8 +27,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.matan = import ./users/matan/home.nix;
-          } 
-          {
             users.users.matan = {
               shell = nixpkgs.legacyPackages.x86_64-linux.fish;
               isNormalUser = true;

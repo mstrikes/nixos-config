@@ -3,10 +3,6 @@
   programs.firefox = {
     enable = true;
 
-    extensions = [
-
-    ];
-
     profiles.matan = {
       isDefault = true;
       name = "matan";

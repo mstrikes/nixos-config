@@ -1,3 +1,2 @@
-{options, config, pkgs, ...}:
-{
-}
+{ options, config, pkgs, ... }:
+{ }

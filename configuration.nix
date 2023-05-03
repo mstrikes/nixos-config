@@ -52,7 +52,9 @@
     # Open ports in the firewall for Source Dedicated Server
     dedicatedServer.openFirewall = true;
   };
-
+  
+  programs.fish.enable = true;
+  
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplip ];

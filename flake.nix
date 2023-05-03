@@ -7,12 +7,12 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
   };
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
-    {
-      overlays.default = final: prev: {
-        discord = import ./overlays/discord;      
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+      overlays.default = final: prev: builtins.mapAttrs (n: o: (o final prev).${n}) self.overlays;
+      overlays = {
+        discord = import ./overlays/discord.nix;
       };
-        
+      
       nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = { host = "matilda"; };
@@ -20,7 +20,22 @@
           { nix.registry.nixpkgs.flake = nixpkgs; }
           { nixpkgs.overlays = [ self.overlays.default ]; }
           ./machines/matilda
-          ./configuration
+          ./configuration.nix
+        
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.matan = import ./users/matan/home.nix;
+          } 
+          {
+            users.users.matan = {
+              shell = nixpkgs.legacyPackages.x86_64-linux.fish;
+              isNormalUser = true;
+              home = "/home/matan";
+              extraGroups = [ "networkmanager" "wheel" "video" "audio"];
+              password = "123455678";
+            };
+          }
         ];
       };
 

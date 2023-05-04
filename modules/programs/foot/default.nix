@@ -1,6 +1,7 @@
 {config, lib, pkgs, ... }:
 let
   cfg = config.programs.foot;
+  iniFormat = pkgs.formats.ini { };
 in with lib; {
   options.programs.foot = {
     enable = mkEnableOption "Foot terminal";
@@ -14,8 +15,8 @@ in with lib; {
   
     server.enable = mkEnableOption "Foot terminal server";
 
-    settings = {
-      type = attrsOf (attrsOf anything);
+    settings = mkOption {
+      type = iniFormat.type;
       default = { };
       example = literalExpression ''
         {
@@ -35,27 +36,19 @@ in with lib; {
   config = mkIf cfg.enable {
     environment.systemPackages = [ cfg.package ];
   
-    environment.etc.footconfig = mkIf (cfg.settings != { }) {
-      text = generators.toINI cfg.settings;
-      target = "xdg/foot/foot.ini";
+    environment.etc."xdg/foot/foot.ini" = mkIf (cfg.settings != { }) {
+      source = iniFormat.generate "foot.ini" cfg.settings;
     };
 
-    systemd.user.services = mkIf cfg.server.enable {
-      foot = {
-        Unit = {
-          Description = "Fast, lightweight and minimalistic Wayland terminal emulator.";
-          Documentation = "man:foot(1)";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-
-        Service = {
-          ExecStart = "${cfg.package}/bin/foot --server";
-          Restart = "on-failure";
-          OOMPolicy = "continue";
-        };
-
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+    systemd.user.services.foot = mkIf cfg.server.enable {
+      description = "Fast, lightweight and minimalistic Wayland terminal emulator.";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${cfg.package}/bin/foot --server";
+        Restart = "on-failure";
+        OOMPolicy = "continue";
       };
     };
   };

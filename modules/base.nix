@@ -1,7 +1,9 @@
 {config, lib, pkgs, ... }:
 {
+  # TODO machine specific
   boot.loader.systemd-boot.enable = lib.mkDefault true;
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.networkmanager.enable = lib.mkDefault true;
 
@@ -9,19 +11,19 @@
 
   environment.systemPackages = with pkgs; [
     exa
-    git
     bat
     wget
     zip unzip
     zstd
+
+    git helix # TODO use programs.git & programs.helix
   ];
 
   users.defaultUserShell = pkgs.fish;
-  environment.shells = [ pkgs.fish ];
-
+  
   programs.fish.enable = true;
   programs.fish.shellAliases = {
-    ls = "exa --color-scale --group-directories-first -l -a -group --icons --header";
+    ls = "exa --color-scale --group-directories-first -l -a --group --icons --header";
     tree = "exa --color-scale -a --group --icons --header -T";
     cat = "bat";
   };
@@ -30,6 +32,7 @@
     enableDefaultFonts = true;
     fonts = [
       pkgs.jetbrains-mono
+      pkgs.noto-fonts-emoji
     ];
   };
 

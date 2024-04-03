@@ -7,6 +7,7 @@
   i18n = {
     defaultLocale = "en_US.UTF-8";
     supportedLocales = [
+      "en_IL/UTF-8"
       "en_US.UTF-8/UTF-8"
       "he_IL.UTF-8/UTF-8"
     ];

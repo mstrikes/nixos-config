@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./jellyfin.nix
     ];
 
   # Set your time zone.
@@ -53,6 +54,7 @@
 
   services.openssh = {
     enable = true;
+    
   };
 
   environment.systemPackages = with pkgs; [
@@ -73,6 +75,7 @@
     settings ={
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
+      trusted-users = [ "matan" ];
     };
     
     gc = {
@@ -86,9 +89,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "networkmanager" ]; # Enable ‘sudo’ for the user.
     hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
-    packages = with pkgs; [
-      rquickshare spotify
-    ];
+    packages = [];
   };
  
   # This option defines the first version of NixOS you have installed on this particular machine,

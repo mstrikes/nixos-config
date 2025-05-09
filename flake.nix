@@ -10,7 +10,14 @@
     nixosConfigurations.watson = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./configuration.nix
+        ./machines/watson/configuration.nix
+      ];
+    };
+
+    nixosConfigurations.matilda = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/matilda/configuration.nix
       ];
     };
   };

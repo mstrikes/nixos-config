@@ -3,7 +3,6 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -52,6 +51,10 @@
     pulse.enable = true;
   };
 
+  services.openssh = {
+    enable = true;
+  };
+
   environment.systemPackages = with pkgs; [
     wget git helix nil
     zstd zip unzip
@@ -60,6 +63,11 @@
   ];
   
   programs.firefox.enable = true;
+
+  services.udev.extraRules =
+    ''
+      SUBSYSTEM="usb", ATTR{idVendor}=="4273", ATTR{idProduct}=="7563",  MODE="0660", GROUP="plugdev"
+    '';
 
   nix = {
     settings ={
@@ -74,31 +82,15 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowBroken = true;
-
   users.users.matan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" "networkmanager" ]; # Enable ‘sudo’ for the user.
     hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
     packages = with pkgs; [
-      rquickshare galaxy-buds-client
-      zoom-us spotify
-
-      prismlauncher
-      openjdk21
+      rquickshare spotify
     ];
   };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-  };
-
-  networking.firewall.allowedTCPPorts = [ 62930 ];
-  
+ 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #

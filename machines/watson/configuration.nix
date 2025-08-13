@@ -58,9 +58,11 @@
     zstd zip unzip
     ghostty
     wl-clipboard
+    scrcpy
   ];
   
   programs.firefox.enable = true;
+  programs.adb.enable = true;
 
   services.udev.extraRules =
     ''
@@ -70,6 +72,7 @@
     settings ={
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
+      trusted-users = [ "matan" ];
     };
     
     gc = {
@@ -84,7 +87,7 @@
 
   users.users.matan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "video" "audio" "networkmanager" "adbusers"]; # Enable ‘sudo’ for the user.
     hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
     packages = with pkgs; [
       rquickshare galaxy-buds-client

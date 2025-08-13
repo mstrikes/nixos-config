@@ -7,7 +7,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./jellyfin.nix
     ];
 
   # Set your time zone.
@@ -65,11 +64,6 @@
   ];
   
   programs.firefox.enable = true;
-
-  services.udev.extraRules =
-    ''
-      SUBSYSTEM="usb", ATTR{idVendor}=="4273", ATTR{idProduct}=="7563",  MODE="0660", GROUP="plugdev"
-    '';
 
   nix = {
     settings ={

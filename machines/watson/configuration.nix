@@ -28,10 +28,11 @@
     enableDefaultPackages = true;
     packages = [
       pkgs.jetbrains-mono
+      pkgs.nerd-fonts.arimo
     ];
 
     fontconfig.defaultFonts = {
-      monospace = [ "JetBrains Mono" ];
+      monospace = [ "JetBrains Mono" "Arimo" ];
     };
   };
 
@@ -88,9 +89,11 @@
     packages = with pkgs; [
       rquickshare galaxy-buds-client
       zoom-us spotify
+      resources
 
       prismlauncher
       openjdk21
+      hplip
     ];
   };
 
@@ -102,6 +105,9 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 62930 ];
+
+  services.printing.enable = true;
+  services.printing.drivers = [ pkgs.hplip ];
   
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

@@ -21,27 +21,22 @@
       "en_US.UTF-8/UTF-8"
       "he_IL.UTF-8/UTF-8"
     ];
-  };  
-  services.xserver.xkb.layout = "us,il";
-
+  };
+  
   fonts = {
     enableDefaultPackages = true;
     packages = [
       pkgs.jetbrains-mono
       pkgs.nerd-fonts.arimo
+      pkgs.google-fonts
+      pkgs.corefonts
     ];
-
-    fontconfig.defaultFonts = {
-      monospace = [ "JetBrains Mono" "Arimo" ];
-    };
-  };
+ };
 
   # Enable the GNOME Desktop Environment.
-  displayManager.gdm.enable = true;
-  desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
   programs.xwayland.enable = true;
-
-  desktopManager.xterm.enable = false;  
 
   # Enable sound.
   services.pipewire = {
@@ -55,6 +50,7 @@
     ghostty
     wl-clipboard
     scrcpy
+    bottles
   ];
   
   programs.firefox.enable = true;
@@ -83,16 +79,22 @@
 
   users.users.matan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "networkmanager" "adbusers"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "video" "audio" "networkmanager" "adbusers" "navidrome" ];
     hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
     packages = with pkgs; [
-      rquickshare galaxy-buds-client
       zoom-us spotify
-      resources
+      onlyoffice-desktopeditors
 
       prismlauncher
       openjdk21
       hplip
+
+      (vintagestory.overrideAttrs {
+        src = fetchurl {
+          url = "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.6.tar.gz";
+          hash = "sha256-LkiL/8W9MKpmJxtK+s5JvqhOza0BLap1SsaDvbLYR0c=";
+        };
+      })
     ];
   };
 
@@ -103,10 +105,19 @@
     localNetworkGameTransfers.openFirewall = true;
   };
 
-  networking.firewall.allowedTCPPorts = [ 62930 ];
+  networking.firewall.allowedTCPPorts = [ 62930 42420];
 
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplip ];
+  
+  services.navidrome = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      MusicFolder = "/var/opt/navidrome";
+      DataFolder = "/var/lib/navidrome";
+    };
+  };
   
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

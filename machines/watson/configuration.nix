@@ -3,8 +3,16 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-
-{
+let
+  vintagebase = (pkgs.vintagestory.override { x11Support = false; waylandSupport = true; });
+  vintage215 = vintagebase.overrideAttrs {
+    version = "1.21.5";
+    src = fetchTarball {
+      url = "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.5.tar.gz";
+      sha256  = "18r5i2q39sasnyrwzz5pclkpy2zhblz2cldv7gjkbs5vksxjxh4f";
+    };
+  };
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -23,43 +31,29 @@
     ];
   };
   
-  fonts = {
-    enableDefaultPackages = true;
-    packages = [
-      pkgs.jetbrains-mono
-      pkgs.nerd-fonts.arimo
-      pkgs.google-fonts
-      pkgs.corefonts
-    ];
- };
-
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-  programs.xwayland.enable = true;
-
-  # Enable sound.
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-  };
-
   environment.systemPackages = with pkgs; [
     wget git helix nil sbctl
     zstd zip unzip
     ghostty
-    wl-clipboard
     scrcpy
     bottles
   ];
+
+  #xdg.terminal-exec = {
+  #  enable = true;
+  #  setttings.default = [
+  #    "ghostty.desktop"
+  #  ];
+  #};
   
   programs.firefox.enable = true;
-  programs.adb.enable = true;
-
+  services.fwupd.enable = true;
+  
   services.udev.extraRules =
     ''
       SUBSYSTEM=="usb", ATTR{idVendor}=="4273", ATTR{idProduct}=="7563",  MODE="0660", GROUP="plugdev"
     '';
+
   nix = {
     settings ={
       experimental-features = [ "nix-command" "flakes" ];
@@ -79,22 +73,17 @@
 
   users.users.matan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" "audio" "networkmanager" "adbusers" "navidrome" ];
+    extraGroups = [ "wheel" "video" "audio" "networkmanager" "navidrome" "plugdev"];
     hashedPassword = "$6$7d3kZc5N9Nem6iZZ$DyUjI/vv42NFQ9baYQqPql17nCtYg2.96AS./vqEzJnbTxo8cgHpgS/FFH/xyT58wq/EjNxHDF.6RgCjBmSHw/";
     packages = with pkgs; [
       zoom-us spotify
-      onlyoffice-desktopeditors
 
       prismlauncher
       openjdk21
       hplip
 
-      (vintagestory.overrideAttrs {
-        src = fetchurl {
-          url = "https://cdn.vintagestory.at/gamefiles/stable/vs_client_linux-x64_1.21.6.tar.gz";
-          hash = "sha256-LkiL/8W9MKpmJxtK+s5JvqhOza0BLap1SsaDvbLYR0c=";
-        };
-      })
+      vintagebase
+      dotnet-runtime_8
     ];
   };
 
@@ -109,9 +98,16 @@
 
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplip ];
+
+  hardware.graphics = {
+      enable = true;
+      package = (pkgs.mesa.overrideAttrs (o: {
+        mesonFlags = o.mesonFlags ++ [ (lib.mesonOption "tools" "intel") ];
+      }));
+    };
   
   services.navidrome = {
-    enable = true;
+    enable = false;
     openFirewall = true;
     settings = {
       MusicFolder = "/var/opt/navidrome";

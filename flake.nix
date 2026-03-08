@@ -14,6 +14,7 @@
     nixosConfigurations.watson = nixpkgs.lib.nixosSystem {
       modules = [
         ./machines/watson/configuration.nix
+        ./modules/graphics.nix
 
         lanzaboote.nixosModules.lanzaboote
       ];

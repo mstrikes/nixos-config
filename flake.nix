@@ -3,8 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  
     lanzaboote = {
-      url = "github:nix-community/lanzaboote";
+      url = "github:nix-community/lanzaboote/v1.1.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,7 +15,9 @@
     nixosConfigurations.watson = nixpkgs.lib.nixosSystem {
       modules = [
         ./machines/watson/configuration.nix
-        ./modules/graphics.nix
+        ./modules/base.nix
+        ./modules/graphical.nix
+        ./users/matan.nix        
 
         lanzaboote.nixosModules.lanzaboote
       ];

@@ -9,6 +9,7 @@
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = lib.mkForce  false;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/var/lib/sbctl";
@@ -17,7 +18,7 @@
   
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
@@ -50,11 +51,10 @@
   networking.interfaces.enp7s0.useDHCP = lib.mkDefault true;
 
   # nvidia graphics
-  hardware.graphics.enable = true;
-  hardware.nvidia.powerManagement.enable = true;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.open = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  # hardware.nvidia.powerManagement.enable = true;
+  # hardware.nvidia.modesetting.enable = true;
+  # hardware.nvidia.open = true;
+  # services.xserver.videoDrivers = [ "nvidia" ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

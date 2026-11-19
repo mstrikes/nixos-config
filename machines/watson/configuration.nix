@@ -2,19 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Set your time zone.
   time.timeZone = "Israel";
- 
+
   environment.systemPackages = with pkgs; [
-    nil sbctl
-    intel-gpu-tools
+    nil
+    sbctl
   ];
 
   services.fwupd.enable = true;
@@ -26,7 +26,7 @@
     graphics.enable = true;
     intel-gpu-tools.enable = true;
   };
-    
+
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #

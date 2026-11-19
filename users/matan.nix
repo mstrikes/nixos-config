@@ -18,10 +18,12 @@ in {
       openjdk21
       vintagestory
       goverlay
-
-      (pkgs.callPackage ../modules/deadworks {})
-      libayatana-appindicator
     ];
+  };
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 42420 ];
   };
 
   nixpkgs.config.allowUnfree = true;

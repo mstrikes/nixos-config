@@ -6,11 +6,10 @@
 , webkitgtk_4_1
 , wrapGAppsHook4
 , libayatana-appindicator    
-, patchelf
 }:
 
 stdenv.mkDerivation {
-  name = "deadworks-launcher";
+  pname = "deadworks-launcher";
   version = "0.4.1";
 
   src = ./Deadworks_0.4.1_amd64.deb;
@@ -18,7 +17,6 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     autoPatchelfHook
     dpkg
-    patchelf
   ];
 
   buildInputs = [
@@ -29,7 +27,12 @@ stdenv.mkDerivation {
     libayatana-appindicator    
   ];
 
-  unpackCmd = "dpkg-deb -x $curSrc source";
-  installPhase = "mv usr $out";
-  fixupPhase = "patchelf --add-needed ${libayatana-appindicator}/lib/libayatana-appindicator3.so.1 $out/bin/deadworks-launcher";
+  runtimeDependencies = [
+    libayatana-appindicator
+  ];
+
+  installPhase = ''
+    mkdir $out
+    cp -r usr/* $out
+  '';
 }
